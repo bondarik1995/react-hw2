@@ -1,26 +1,54 @@
 import React from 'react';
-import logo from './logo.svg';
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const lengthNumber = 13; 
 
-export default App;
+export default class App extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      number: '',
+      errorMessage: ''
+    }
+
+    this.validating = this.validating.bind(this);
+  }
+
+  validating(e) {
+    let number = e.target.value;
+    var errorMessage = '';
+
+    if (number.length >= lengthNumber) {
+      var match = number.match(/^(\+375)(29|33|44|25)([\d\- ]{7}$)/);
+
+      if (match === null) {
+        errorMessage = 'Номер введен неверно';
+      }
+    }
+    
+    this.setState({ number, errorMessage });
+  }
+
+  render() {
+    const {number, errorMessage} = this.state;
+
+    return (
+      <div className="App">
+        <br />
+        <input 
+          type='text'
+          value={number}
+          name='phone'
+          placeholder='Your number'
+          maxLength={lengthNumber}
+          onChange={this.validating}
+          className={errorMessage !== '' ? 'error' : ''}
+        />
+        <br />
+        {errorMessage !== '' ? errorMessage : ''}
+      </div>
+    );
+  }
+}
