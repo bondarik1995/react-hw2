@@ -20,19 +20,26 @@ export default class Languages extends React.Component {
 
   render() {
 		const { countries } = this.state;
-		const languages = [];
-		
-		for (let i = 0; i < countries.length; i++) {
-			for (let j = 0; j < countries[i].languages.length; j++) {
-				var arr = languages.filter(language => {
-					return language.name === countries[i].languages[j].name;
-				});
-				if (arr.length === 0)
-					languages.push(countries[i].languages[j]);
-			}
+
+		const getUniqueLanguages = countries => {
+			const set = new Set();
+			countries.forEach(country => country.languages.forEach(language => set.add(language.name)));
+			const languages = [...set];
+			languages.sort((a, b) => a > b ? 1 : -1);
+			return languages;
+		};
+
+		const languages = getUniqueLanguages(countries);
+
+		const getCountriesByLanguage = (countries, languageName) => {
+			return (
+				countries.filter(country => {
+					return (
+						country.languages.find(language => language.name === languageName) != null
+					);
+				})
+			);
 		}
-		
-		languages.sort((a, b) => a.name > b.name ? 1 : -1);
 
     if (this.state.isError) {
       return "Unexpected error. Please, contact support.";
@@ -50,15 +57,10 @@ export default class Languages extends React.Component {
 						{languages.map((language, index) => (
 							<tr key={index}>
 								<td>
-									{language.name}
+									{language}
 									<br />
 									<ul>
-										{countries.filter(country => {
-											var arr2 = country.languages.filter(item => {
-												return item.name === language.name;
-											});
-											return arr2.length !== 0;
-										}).map((country, index) => <li key={index}>{country.name}</li>)}
+										{getCountriesByLanguage(countries, language).map((country, index) => <li key={index}>{country.name}</li>)}
 									</ul>
 								</td>
 							</tr>

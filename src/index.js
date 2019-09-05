@@ -7,6 +7,7 @@ import Navbar from './Navbar';
 import Pagination from './Pagination';
 import Countries from './Countries';
 import Languages from './Languages';
+import NavApp from './NavApp';
 import * as serviceWorker from './serviceWorker';
 
 // Валидация номера
@@ -14,8 +15,8 @@ import * as serviceWorker from './serviceWorker';
 
 // Меню
 // ReactDOM.render(<Navbar 
-// 		items={[{name: 'Home'}, {name: 'Search'}, {name: 'Contact'}, {name: 'About'}, {name: 'Login'}]}
-// 		initialActiveItemId='Home' 
+// 		items={['Home', 'Search', 'Contact', 'About', 'Login']}
+// 		activeItem='Home' 
 // />, document.getElementById('root'));
 
 // Пагинация
@@ -34,11 +35,6 @@ import * as serviceWorker from './serviceWorker';
 // ReactDOM.render(<Languages />, document.getElementById('root'));
 
 // Переключение таблиц
-ReactDOM.render(<Navbar 
-    items={[
-			{name: 'Страны', loadingContent: <Countries />},
-			{name: 'Языки', loadingContent: <Languages />}
-		]} initialActiveItemId='Страны' 
-/>, document.getElementById('root'));
+ReactDOM.render(<NavApp />, document.getElementById('root'));
 
 serviceWorker.unregister();

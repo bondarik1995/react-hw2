@@ -10,14 +10,24 @@ export default class Pagination extends React.Component {
       pages: (props.pages !== undefined ? props.pages : 0),
 			activePage: (props.activePage !== undefined ? props.activePage : 0)
 		}
-
-		this.makeActive = this.makeActive.bind(this);
 	}
 
-	makeActive(e) {
+	makeActive = e => {
 		e.preventDefault();
 		
-		this.setState({activePage: e.target.textContent});
+		this.setState({activePage: parseInt(e.target.textContent, 10)});
+	}
+
+	nextPage = e => {
+		e.preventDefault();
+		
+		this.setState({activePage: this.state.activePage + 1});
+	}
+
+	prevPage = e => {
+		e.preventDefault();
+		
+		this.setState({activePage: this.state.activePage - 1});
 	}
 
   render() {
@@ -33,18 +43,18 @@ export default class Pagination extends React.Component {
 		
     return (
 			<div className="pagination clearfix">
-				{(activePage > middlePosition ? <a href="#">&laquo;</a> : '')}
+				{(activePage > middlePosition ? <a href="#" onClick={this.prevPage}>&laquo;</a> : '')}
 				{pagination.map((page, index) => {
 					return (
 						<a 
 							key={index}
 							href='#'
-							className={String(page) === String(activePage) ? 'active' : ''}
+							className={page === activePage ? 'active' : ''}
 							onClick={this.makeActive}
 						>{page}</a>
 					);
 				})}
-				{(activePage < ((pages - 1) - middlePosition) ? <a href="#">&raquo;</a> : '')}
+				{(activePage <= (pages - middlePosition) ? <a href="#" onClick={this.nextPage}>&raquo;</a> : '')}
 			</div>
     );
   }
